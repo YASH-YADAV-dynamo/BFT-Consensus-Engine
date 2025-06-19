@@ -1,5 +1,14 @@
 const crypto = require('crypto');
 
+/**
+ * Block Class - Represents a single block in the blockchain
+ * 
+ * Features:
+ * - Hash calculation with SHA-256
+ * - Mining simulation with proof-of-work
+ * - Block validation
+ * - Educational display methods
+ */
 class Block {
   constructor(index, previousHash, data, timestamp = Date.now()) {
     this.index = index;
@@ -11,13 +20,21 @@ class Block {
     this.votes = 0; // Track votes received
   }
 
+  /**
+   * Calculate SHA-256 hash of the block
+   * @returns {string} The calculated hash
+   */
   calculateHash() {
     return crypto.createHash('sha256').update(
       this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce
     ).digest('hex');
   }
 
-  // Simulate mining process for educational purposes
+  /**
+   * Simulate mining process with proof-of-work
+   * @param {number} difficulty - Mining difficulty (number of leading zeros)
+   * @returns {string} The mined hash
+   */
   mineBlock(difficulty = 2) {
     const target = Array(difficulty + 1).join('0');
     
@@ -38,7 +55,9 @@ class Block {
     return this.hash;
   }
 
-  // Educational method to display block information
+  /**
+   * Display detailed block information for educational purposes
+   */
   displayInfo() {
     console.log('\n📦 BLOCK INFORMATION:');
     console.log(`   Index: ${this.index}`);
@@ -50,7 +69,11 @@ class Block {
     console.log(`   Votes: ${this.votes}`);
   }
 
-  // Validate block structure
+  /**
+   * Validate block structure and integrity
+   * @param {Block} previousBlock - The previous block in the chain
+   * @returns {Object} Validation result with valid boolean and reason
+   */
   isValid(previousBlock) {
     if (this.hash !== this.calculateHash()) {
       return { valid: false, reason: 'Hash is invalid' };
@@ -68,4 +91,4 @@ class Block {
   }
 }
 
-module.exports = Block;
+module.exports = Block; 
